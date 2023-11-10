@@ -1,0 +1,10 @@
+version: "3.2"
+
+services:
+
+  api:
+    build: ./images/api
+    ports:
+      - 8080:3000
+    volumes:
+      - ./images/api/src:/usr/app/src 
