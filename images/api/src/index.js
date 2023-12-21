@@ -11,11 +11,12 @@ const db = knex(knexfile.development);
 
 app.use(express.json());
 
-// console.log(db.raw("SELECT 1+1"))
-app.get("/", (request,response ) =>{
-    response.send({ message: "hello"})
-})
+// Root route
+app.get("/", (request, response) => {
+  response.send({ message: "Hello" });
+});
 
+// Create a new student
 app.post('/api/students', async (req, res) => {
   if (!req.body) {
     return res.status(400).send({
@@ -33,7 +34,7 @@ app.post('/api/students', async (req, res) => {
       email,
     });
     res.status(201).send({
-      message: 'User created successfully',
+      message: 'Student created successfully',
     });
   } catch (error) {
     console.error(error);
@@ -44,6 +45,41 @@ app.post('/api/students', async (req, res) => {
   }
 });
 
+// Update an existing student
+app.put('/api/students/:id', async (req, res) => {
+  const studentId = req.params.id;
+
+  if (!req.body) {
+    return res.status(400).send({
+      error: "Request body is missing or empty",
+    });
+  }
+
+  const { first_name, last_name, age, email } = req.body;
+  try {
+    // Update the student record
+    await db('students')
+      .where('id', studentId)
+      .update({
+        first_name,
+        last_name,
+        age,
+        email,
+      });
+
+    res.status(200).send({
+      message: 'Student updated successfully',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      error: "Something went wrong",
+      value: error,
+    });
+  }
+});
+
+// Start the server
 app.listen(3000, (err) => {
   if (!err) {
     console.log("Running on port " + 3000);
