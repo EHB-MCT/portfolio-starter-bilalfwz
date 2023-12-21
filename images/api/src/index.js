@@ -79,6 +79,28 @@ app.put('/api/students/:id', async (req, res) => {
   }
 });
 
+// Delete an existing student
+app.delete('/api/students/:id', async (req, res) => {
+  const studentId = req.params.id;
+
+  try {
+    // Delete the student record
+    await db('students')
+      .where('id', studentId)
+      .del();
+
+    res.status(200).send({
+      message: 'Student deleted successfully',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      error: "Something went wrong",
+      value: error,
+    });
+  }
+});
+
 // Start the server
 app.listen(3000, (err) => {
   if (!err) {
@@ -87,3 +109,4 @@ app.listen(3000, (err) => {
     console.error(err);
   }
 });
+
