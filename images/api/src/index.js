@@ -139,4 +139,17 @@ app.listen(3000, (err) => {
   }
 });
 
+app.get('/api/students', async (req, res) => {
+    try {
+      const students = await db('students');
+      res.status(200).send(students);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({
+        error: "Something went wrong",
+        value: error,
+      });
+    }
+  });
+
 
