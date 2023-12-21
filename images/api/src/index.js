@@ -16,7 +16,13 @@ app.get("/", (request, response) => {
   response.send({ message: "Hello" });
 });
 
-// Create a new student
+/**
+ 
+POST endpoint for creating a new student.
+@param - The HTTP request object.
+@param - The HTTP response object.
+@returns - The HTTP response containing either a success message or an error.
+*/
 app.post('/api/students', async (req, res) => {
   if (!req.body) {
     return res.status(400).send({
@@ -45,7 +51,14 @@ app.post('/api/students', async (req, res) => {
   }
 });
 
-// Update an existing student
+/**
+ 
+PUT endpoint for updating a new student.
+@param - The HTTP request object.
+@param - The HTTP response object.
+@returns - The HTTP response containing either a success message or an error.
+*/
+
 app.put('/api/students/:id', async (req, res) => {
   const studentId = req.params.id;
 
@@ -79,7 +92,14 @@ app.put('/api/students/:id', async (req, res) => {
   }
 });
 
-// Delete an existing student
+/**
+ 
+DELETE endpoint for deleting a student.
+@param - The HTTP request object.
+@param - The HTTP response object.
+@returns - The HTTP response containing either a success message or an error.
+*/
+
 app.delete('/api/students/:id', async (req, res) => {
   const studentId = req.params.id;
 
@@ -101,7 +121,14 @@ app.delete('/api/students/:id', async (req, res) => {
   }
 });
 
-// Retrieve all students or a specific student by ID
+/**
+ 
+GET endpoint to retrieve all students or a specific student by ID
+@param - The HTTP request object.
+@param - The HTTP response object.
+@returns - The HTTP response containing either a success message or an error.
+*/
+
 app.get('/api/students/:id?', async (req, res) => {
   const studentId = req.params.id;
 
@@ -138,6 +165,14 @@ app.listen(3000, (err) => {
     console.error(err);
   }
 });
+
+/**
+ 
+GET endpoint to retrieve all students
+@param - The HTTP request object.
+@param - The HTTP response object.
+@returns - The HTTP response containing either a success message or an error.
+*/
 
 app.get('/api/students', async (req, res) => {
     try {
