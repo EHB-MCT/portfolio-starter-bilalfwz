@@ -101,6 +101,35 @@ app.delete('/api/students/:id', async (req, res) => {
   }
 });
 
+// Retrieve all students or a specific student by ID
+app.get('/api/students/:id?', async (req, res) => {
+  const studentId = req.params.id;
+
+  try {
+    if (studentId) {
+      // Retrieve a specific student by ID
+      const student = await db('students').where('id', studentId).first();
+      if (!student) {
+        return res.status(404).send({
+          error: "Student not found",
+        });
+      }
+
+      res.status(200).send(student);
+    } else {
+      // Retrieve all students
+      const students = await db('students');
+      res.status(200).send(students);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      error: "Something went wrong",
+      value: error,
+    });
+  }
+});
+
 // Start the server
 app.listen(3000, (err) => {
   if (!err) {
@@ -109,4 +138,5 @@ app.listen(3000, (err) => {
     console.error(err);
   }
 });
+
 
