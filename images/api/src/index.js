@@ -11,6 +11,8 @@ const db = knex(knexfile.development);
 
 app.use(express.json());
 
+const { checkStudentName } = require("./helpers/endPointHelpers.js")
+
 // Root route
 app.get("/", (request, response) => {
   response.send({ message: "Hello" });
@@ -29,7 +31,7 @@ app.post('/api/students', async (req, res) => {
       error: "Request body is missing or empty",
     });
   }
-
+  
   const { id, first_name, last_name, age, email } = req.body;
   try {
     await db('students').insert({
