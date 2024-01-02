@@ -218,7 +218,7 @@ app.get('/api/students', async (req, res) => {
   });
 
    /**
- * GET endpoint to retrieve all students to submit water consumption.
+ * GET endpoint to retrieve a students to submit water consumption.
  * @param - The HTTP request object.
  * @param - The HTTP response object.
  * @returns - The HTTP response containing either a success message or an error.
@@ -232,6 +232,30 @@ app.get('/api/students', async (req, res) => {
       const waterInfo = await db('water_info').where('student_id', studentId);
   
       res.status(200).send(waterInfo);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({
+        error: "Something went wrong",
+        value: error,
+      });
+    }
+  });
+
+    /**
+ * GET endpoint to retrieve all students to submit water consumption.
+ * @param - The HTTP request object.
+ * @param - The HTTP response object.
+ * @returns - The HTTP response containing either a success message or an error.
+ */
+
+  app.get('/api/water-info-all', async (req, res) => {
+    try {
+      // Perform a join operation to retrieve all students with their water consumption records
+      const result = await db('water_info')
+        .join('students', 'water_info.student_id', 'students.id')
+        .select('students.id as student_id', 'students.first_name', 'students.last_name', 'water_info.glasses_of_water');
+  
+      res.status(200).send(result);
     } catch (error) {
       console.error(error);
       res.status(500).send({
