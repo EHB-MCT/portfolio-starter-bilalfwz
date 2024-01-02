@@ -189,4 +189,32 @@ app.get('/api/students', async (req, res) => {
     }
   });
 
+  /**
+ * POST endpoint for a student to submit water consumption.
+ * @param - The HTTP request object.
+ * @param - The HTTP response object.
+ * @returns - The HTTP response containing either a success message or an error.
+ */
+  app.post('/api/water_info', async (req, res) => {
+    const { student_id, glasses_of_water } = req.body;
+  
+    try {
+      // Record water consumption for the specified student
+      await db('water_info').insert({
+        student_id,
+        glasses_of_water,
+      });
+  
+      res.status(201).send({
+        message: 'Water consumption recorded successfully',
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({
+        error: "Something went wrong",
+        value: error,
+      });
+    }
+  });
+
 
