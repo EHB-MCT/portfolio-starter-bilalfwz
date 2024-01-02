@@ -217,4 +217,28 @@ app.get('/api/students', async (req, res) => {
     }
   });
 
+   /**
+ * GET endpoint to retrieve all students to submit water consumption.
+ * @param - The HTTP request object.
+ * @param - The HTTP response object.
+ * @returns - The HTTP response containing either a success message or an error.
+ */
+
+  app.get('/api/water-info/:student_id', async (req, res) => {
+    const studentId = req.params.student_id;
+  
+    try {
+      // Retrieve water consumption records for the specified student
+      const waterInfo = await db('water_info').where('student_id', studentId);
+  
+      res.status(200).send(waterInfo);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({
+        error: "Something went wrong",
+        value: error,
+      });
+    }
+  });
+
 
