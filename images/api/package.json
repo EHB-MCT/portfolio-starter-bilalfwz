@@ -4,9 +4,11 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "npm run migrate && nodemon src/index.js --legacy-watch",
-    "migrate": "npx knex migrate:latest --cwd src/db",
-    "test": "jest"
+    "start": "npx knex migrate:latest --cwd ./src/db && npm run test && nodemon ./src/index.js",
+    "dev": "npx knex migrate:latest --cwd ./src/db && npx knex seed:run --cwd ./src/db && npm run test-watch",
+    "ci": "npx knex migrate:latest --cwd ./src/db && npx knex seed:run --cwd ./src/db && npm run test",
+    "test": "jest --detectOpenHandles --forceExit",
+    "test-watch": "jest --watchAll --detectOpenHandles"
   },
   "author": "",
   "license": "ISC",
@@ -17,9 +19,12 @@
     "knex": "^3.0.1",
     "nodemon": "^3.0.1",
     "pg": "^8.11.3",
-    "postgres": "^3.4.3"
+    "postgres": "^3.4.3",
+    "three": "^0.160.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "vite": "^5.0.10"
   }
 }
