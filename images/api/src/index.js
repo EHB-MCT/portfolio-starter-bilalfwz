@@ -11,6 +11,8 @@ const db = knex(knexfile.development);
 
 app.use(express.json());
 
+
+
 const { checkStudentName } = require("./helpers/endPointHelpers.js")
 
 // Root route
@@ -264,5 +266,37 @@ app.get('/api/students', async (req, res) => {
       });
     }
   });
+
+  /**
+ * DELETE endpoint to remove water consumption records for a specific student.
+ * @param {number} req.params.studentId - The ID of the student for whom water consumption records should be deleted.
+ * @returns {Object} - The HTTP response containing either a success message or an error.
+ */
+app.delete('/api/water-info/:studentId', async (req, res) => {
+  const studentId = req.params.studentId;
+
+  try {
+    // Check if the student exists
+    const existingStudent = await db('students').where('id', studentId).first();
+    if (!existingStudent) {
+      return res.status(404).send({
+        error: "Student not found",
+      });
+    }
+
+    // Delete water consumption records for the specified student
+    await db('water_info').where('student_id', studentId).del();
+
+    res.status(200).send({
+      message: 'Water consumption records deleted successfully',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      error: "Something went wrong",
+      value: error,
+    });
+  }
+});
 
 
