@@ -299,4 +299,45 @@ app.delete('/api/water-info/:studentId', async (req, res) => {
   }
 });
 
+/**
+ * PUT endpoint to update water consumption records for a specific student.
+ * @param {number} req.params.studentId - The ID of the student for whom water consumption records should be updated.
+ * @param {Object} req.body - The request body containing the updated water consumption data.
+ * @returns {Object} - The HTTP response containing either a success message or an error.
+ */
+app.put('/api/water-info/:studentId', async (req, res) => {
+  const studentId = req.params.studentId;
+
+  if (!req.body) {
+    return res.status(400).send({
+      error: "Request body is missing or empty",
+    });
+  }
+
+  const { glasses_of_water } = req.body;
+
+  try {
+    // Check if the student exists
+    const existingStudent = await db('students').where('id', studentId).first();
+    if (!existingStudent) {
+      return res.status(404).send({
+        error: "Student not found",
+      });
+    }
+
+    // Update water consumption records for the specified student
+    await db('water_info').where('student_id', studentId).update({ glasses_of_water });
+
+    res.status(200).send({
+      message: 'Water consumption records updated successfully',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      error: "Something went wrong",
+      value: error,
+    });
+  }
+});
+
 
