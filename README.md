@@ -1,5 +1,8 @@
 # DEV V Portfolio
 
+# ERROR
+
+After merging my development branch into the main branch, I am encountering errors in my terminal for both the main and development branches, even though I haven't made any changes since the merge.
 
 # Aquasync
 
