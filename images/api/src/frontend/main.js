@@ -64,33 +64,34 @@ function expandWaterLevel() {
 function createRainDrops() {
   const dropGeometry = new THREE.SphereGeometry(0.05, 32, 32); // Grootte van de waterdruppels
   const dropMaterial = new THREE.MeshBasicMaterial({ color: 0x00aaff });
-  
-  for (let i = 0; i < 10; i++) {
+  const backgroundGroup = new THREE.Group();
+
+  for (let i = 0; i < 100; i++) {
     const waterDrop = new THREE.Mesh(dropGeometry, dropMaterial);
     waterDrop.position.set(
-      Math.random() * 2 - 1,   // x-coordinate within a range (-1 to 1)
-      Math.random() * 2 - 1,   // y-coordinate within a range (-1 to 1)
-      -1                       // z-coordinate at the back of the scene
+      (Math.random() - 0.5) * 20,   // x-coordinate within a range (-10 to 10)
+      (Math.random() - 0.5) * 20,   // y-coordinate within a range (-10 to 10)
+      (Math.random() - 0.5) * 20    // z-coordinate within a range (-10 to 10)
     );
-    scene.add(waterDrop);
-    
-    // Animate the water drop falling
+    backgroundGroup.add(waterDrop);
     animateWaterDrop(waterDrop);
   }
+
+  scene.add(backgroundGroup);
 }
 
 function animateWaterDrop(waterDrop) {
   const fallSpeed = 0.02; // Snelheid waarmee de waterdruppels vallen
-  
+
   function animate() {
     requestAnimationFrame(animate);
-    
+
     // Move the water drop downwards
     waterDrop.position.y -= fallSpeed;
-    
-    // If the water drop reaches the bottom, remove it
-    if (waterDrop.position.y < -2) {
-      scene.remove(waterDrop);
+
+    // If the water drop reaches the bottom, reset its position
+    if (waterDrop.position.y < -10) {
+      waterDrop.position.y = 10;
     }
   }
 
@@ -108,15 +109,18 @@ const radialSegments = 32; // Number of segments around the circumference
 const cylinderGroup = new THREE.Group();
 scene.add(cylinderGroup);
 
-const geometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
-const glassMaterial = new THREE.MeshBasicMaterial({ color: 0x3498db });
-const glass = new THREE.Mesh(geometry, glassMaterial);
+// Kleuren voor de fles en het deksel
+const bottleColor = 0x3498db; // Blauwe kleur
+const lidColor = 0xffffff;    // Witte kleur
+
+// Materiaal voor de fles
+const glassMaterial = new THREE.MeshBasicMaterial({ color: bottleColor });
+const glass = new THREE.Mesh(new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments), glassMaterial);
 cylinderGroup.add(glass);
 
-// Toevoegen van deksel bovenop de cilinder
-const lidGeometry = new THREE.CircleGeometry(radiusTop, radialSegments);
-const lidMaterial = new THREE.MeshBasicMaterial({ color: 0x3498db });
-const lid = new THREE.Mesh(lidGeometry, lidMaterial);
+// Materiaal voor het deksel
+const lidMaterial = new THREE.MeshBasicMaterial({ color: lidColor });
+const lid = new THREE.Mesh(new THREE.CircleGeometry(radiusTop, radialSegments), lidMaterial);
 lid.position.y = height / 2;
 cylinderGroup.add(lid);
 
