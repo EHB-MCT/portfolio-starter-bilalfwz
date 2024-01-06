@@ -1,11 +1,9 @@
-# Portfolio
+# DEV V Portfolio
 
 
- npx knex migrate:make [name of migration] --cwd .\src\db
+# Aquasync
 
-# Project Name
-
-Brief project description goes here.
+The purpose of "AquaSync" is to assist users in tracking and optimizing their daily water intake by providing a simple and effective method to record the number of glasses of water consumed. This aims to make hydration a seamless habit, facilitating users in achieving their daily water goals.
 
 ## Purpose
 
